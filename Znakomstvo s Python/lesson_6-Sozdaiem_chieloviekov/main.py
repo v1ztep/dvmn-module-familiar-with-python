@@ -2,11 +2,11 @@ from faker import Faker
 import file_operations
 import random
 
-
 fake = Faker("ru_RU")
+min_characterization = (8)
+max_characterization = (14)
 
 skills = ('Стремительный прыжок', 'Электрический выстрел', 'Ледяной удар', 'Стремительный удар', 'Кислотный взгляд', 'Тайный побег', 'Ледяной выстрел', 'Огненный заряд')
-
 runic_letters = {
     'а': 'а͠', 'б': 'б̋', 'в': 'в͒͠', 'г': 'г͒͠', 'д': 'д̋', 'е': 'е͠',
     'ё': 'ё͒͠', 'ж': 'ж͒', 'з': 'з̋̋͠', 'и': 'и', 'й': 'й͒͠', 'к': 'к̋̋',
@@ -31,7 +31,7 @@ for skill in skills:
 
 
 for number in range(10):
-    non_repeat_3skills = random.sample(runic_skills, 3)
+    three_unique_skills = random.sample(runic_skills, 3)
 
     context = {
         'first_name': fake.first_name_male(),
@@ -39,15 +39,15 @@ for number in range(10):
         'town': fake.city(),
         'job': fake.job(),
 
-        'strength': random.randint(8,14),
-        'agility': random.randint(8,14),
-        'endurance': random.randint(8,14),
-        'intelligence': random.randint(8,14),
-        'luck': random.randint(8,14),
+        'strength': random.randint(min_characterization, max_characterization),
+        'agility': random.randint(min_characterization, max_characterization),
+        'endurance': random.randint(min_characterization, max_characterization),
+        'intelligence': random.randint(min_characterization, max_characterization),
+        'luck': random.randint(min_characterization, max_characterization),
 
-        'skill_1': non_repeat_3skills[0],
-        'skill_2': non_repeat_3skills[1],
-        'skill_3': non_repeat_3skills[2]
+        'skill_1': three_unique_skills[0],
+        'skill_2': three_unique_skills[1],
+        'skill_3': three_unique_skills[2]
     }
 
     file_operations.render_template("charsheet.svg", "result/charsheet-{}.svg".format(number+1), context)
