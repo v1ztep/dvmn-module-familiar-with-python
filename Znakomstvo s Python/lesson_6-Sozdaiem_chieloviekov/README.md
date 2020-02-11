@@ -1,7 +1,7 @@
 ## Урок 6. Создаём человеков
 
 В данном уроке рассматривается библиотека для тестирования Faker, с её помощью в папку /result формируются 10 уникальных персонажей игры из шаблона charsheet.svg
-![](//dvmn.org/media/filer_public/75/7a/757af5fe-85dd-4938-a72a-fcf9534ce8fd/fake-people.gif)
+![](//cdn1.savepice.ru/uploads/2020/2/11/7262367b260294ac7877b3bbbebb8775-full.jpg)
 
 ### Требования к окружению
 python 3.7
