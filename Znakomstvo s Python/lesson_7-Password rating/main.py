@@ -1,6 +1,6 @@
 import urwid
 
-symbols = "!@#$%^&*()_-+={}[]"
+SYMBOLS = "!@#$%^&*()_-+={}[]"
 
 
 def is_very_long(password):
@@ -19,10 +19,10 @@ def has_lower_letters(password):
     return any(letter.islower() for letter in password)
 
 def has_symbols(password):
-    return any(letter in symbols for letter in password)
+    return any(letter in SYMBOLS for letter in password)
 
 def has_not_only_symbols(password):
-    return any(letter not in symbols for letter in password)
+    return any(letter not in SYMBOLS for letter in password)
 
 
 def on_ask_change(edit, new_edit_text):
