@@ -3,11 +3,13 @@ import requests
 import os
 from dotenv import load_dotenv
 from geopy import distance
+import folium
 
 load_dotenv()
 
 
 APIKEY = os.getenv('MY_API_KEY')
+
 
 def fetch_coordinates(APIKEY, place):
     base_url = "https://geocode-maps.yandex.ru/1.x"
@@ -20,28 +22,47 @@ def fetch_coordinates(APIKEY, place):
     return lon, lat
 
 
+def get_bar_distance(bars_around):
+    return bars_around['distance']
+
+
+my_coordinates = fetch_coordinates(APIKEY, input('Где вы находитесь? '))
+print('Ваши координаты: ', my_coordinates)
+
+bars_around = []
+
 with open('bars.json', 'r', encoding='CP1251') as my_file:
     file_contents = json.loads(my_file.read())
 
     for bar_info in file_contents:
-        print(bar_info['Name'], bar_info['geoData']['coordinates'][0], bar_info['geoData']['coordinates'][1])
+        bar_around_info = {
+            'distance': distance.distance((my_coordinates[1], my_coordinates[0]), (
+            bar_info['geoData']['coordinates'][1], bar_info['geoData']['coordinates'][0])).km,
+            'latitude': bar_info['geoData']['coordinates'][1],
+            'longitude': bar_info['geoData']['coordinates'][0],
+            'title': bar_info['Name']
+        }
+        bars_around.append(bar_around_info)
 
+sorted_five_bars = sorted(bars_around, key=get_bar_distance)[:5]
 
+me_and_five_bars_on_map = folium.Map(
+    location=[my_coordinates[1], my_coordinates[0]],
+    zoom_start=15
+)
 
-krasnayaPL = ('55.753595', '37.621031')
-Vladivostok = ('43.115536', '131.885485')
-print(distance.distance(krasnayaPL, Vladivostok).km)   #Yandex возвращает долготу и широту, GeoPy принимает в обратном порядке: широту и долготу
+folium.Marker(
+    location=[my_coordinates[1], my_coordinates[0]],
+    popup='Me',
+    icon=folium.Icon(color='red', icon='info-sign')
+).add_to(me_and_five_bars_on_map)
 
+for bar in sorted_five_bars:
+    folium.Marker(
+        location=[bar['latitude'], bar['longitude']],
+        popup=bar['title'],
+        icon=folium.Icon(color='green')
+    ).add_to(me_and_five_bars_on_map)
 
-
-coords = fetch_coordinates(APIKEY, input('Где вы находитесь? '))
-print('Ваши координаты: ', coords) #Yandex возвращает долготу и широту
-
-
-
-
-# print(first_bar_info)
-# print(latitude)
-# print(longitude)
-
+me_and_five_bars_on_map.save('index.html')
 
