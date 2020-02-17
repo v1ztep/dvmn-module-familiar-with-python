@@ -36,8 +36,7 @@ with open('bars.json', 'r', encoding='CP1251') as my_file:
 
     for bar_info in file_contents:
         bar_around_info = {
-            'distance': distance.distance((my_coordinates[1], my_coordinates[0]), (
-            bar_info['geoData']['coordinates'][1], bar_info['geoData']['coordinates'][0])).km,
+            'distance': distance.distance((my_coordinates[1], my_coordinates[0]), (bar_info['geoData']['coordinates'][1], bar_info['geoData']['coordinates'][0])).km,
             'latitude': bar_info['geoData']['coordinates'][1],
             'longitude': bar_info['geoData']['coordinates'][0],
             'title': bar_info['Name']
