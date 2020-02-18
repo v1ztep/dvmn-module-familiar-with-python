@@ -22,7 +22,7 @@ def get_bar_distance(bar_around):
     return bar_around['distance']
 
 def bars_around_user():
-    with open('index.html') as file:
+    with open('index.html', encoding='utf-8') as file:
       return file.read()
 
 def main():
