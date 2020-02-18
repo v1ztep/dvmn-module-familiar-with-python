@@ -27,21 +27,21 @@ def main():
 
     user_coordinates = fetch_coordinates(APIKEY, input('Введите своё местоположение: '))
 
-    bars_around = []
+    bars_with_distance = []
 
     with open('bars.json', 'r', encoding='CP1251') as my_file:
         bars_contents = json.loads(my_file.read())
 
         for bar_info in bars_contents:
-            bar_around_info = {
+            bar_info_with_distance = {
                 'distance': distance.distance((user_coordinates[1], user_coordinates[0]), (bar_info['geoData']['coordinates'][1], bar_info['geoData']['coordinates'][0])).km,
                 'latitude': bar_info['geoData']['coordinates'][1],
                 'longitude': bar_info['geoData']['coordinates'][0],
                 'title': bar_info['Name']
             }
-            bars_around.append(bar_around_info)
+            bars_with_distance.append(bar_info_with_distance)
 
-    sorted_bars = sorted(bars_around, key=get_bar_distance)[:NEAREST_BARS_AMOUNT]
+    sorted_bars = sorted(bars_with_distance, key=get_bar_distance)[:NEAREST_BARS_AMOUNT]
 
     user_and_bars_on_map = folium.Map(
         location=[user_coordinates[1], user_coordinates[0]],
