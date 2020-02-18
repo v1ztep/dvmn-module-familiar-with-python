@@ -25,7 +25,7 @@ def main():
     APIKEY = os.getenv('YANDEX_GEOCODER_APIKEY')
     NEAREST_BARS_AMOUNT = 5
 
-    user_coordinates = fetch_coordinates(APIKEY, input('Введите своё местоположение: '))
+    user_lon, user_lat = fetch_coordinates(APIKEY, input('Введите своё местоположение: '))
 
     bars_with_distance = []
 
@@ -34,7 +34,7 @@ def main():
 
         for bar_info in bars_contents:
             bar_info_with_distance = {
-                'distance': distance.distance((user_coordinates[1], user_coordinates[0]), (bar_info['geoData']['coordinates'][1], bar_info['geoData']['coordinates'][0])).km,
+                'distance': distance.distance((user_lat, user_lon), (bar_info['geoData']['coordinates'][1], bar_info['geoData']['coordinates'][0])).km,
                 'latitude': bar_info['geoData']['coordinates'][1],
                 'longitude': bar_info['geoData']['coordinates'][0],
                 'title': bar_info['Name']
@@ -44,12 +44,12 @@ def main():
     sorted_bars = sorted(bars_with_distance, key=get_bar_distance)[:NEAREST_BARS_AMOUNT]
 
     user_and_bars_on_map = folium.Map(
-        location=[user_coordinates[1], user_coordinates[0]],
+        location=[user_lat, user_lon],
         zoom_start=15
     )
 
     folium.Marker(
-        location=[user_coordinates[1], user_coordinates[0]],
+        location=[user_lat, user_lon],
         popup='User',
         icon=folium.Icon(color='red', icon='info-sign')
     ).add_to(user_and_bars_on_map)
