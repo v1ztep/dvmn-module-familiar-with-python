@@ -23,6 +23,7 @@ def get_bar_distance(bar_around):
 def main():
     load_dotenv()
     APIKEY = os.getenv('YANDEX_GEOCODER_APIKEY')
+    NEAREST_BARS_AMOUNT = 5
 
     user_coordinates = fetch_coordinates(APIKEY, input('Введите своё местоположение: '))
 
@@ -40,7 +41,7 @@ def main():
             }
             bars_around.append(bar_around_info)
 
-    sorted_bars = sorted(bars_around, key=get_bar_distance)[:5]
+    sorted_bars = sorted(bars_around, key=get_bar_distance)[:NEAREST_BARS_AMOUNT]
 
     user_and_bars_on_map = folium.Map(
         location=[user_coordinates[1], user_coordinates[0]],
