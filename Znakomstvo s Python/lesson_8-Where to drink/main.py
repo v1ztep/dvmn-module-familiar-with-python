@@ -33,11 +33,15 @@ def main():
         bars_contents = json.loads(my_file.read())
 
         for bar_info in bars_contents:
+            bar_latitude = bar_info['geoData']['coordinates'][1]
+            bar_longitude = bar_info['geoData']['coordinates'][0]
+            bar_name = bar_info['Name']
+
             bar_info_with_distance = {
-                'distance': distance.distance((user_lat, user_lon), (bar_info['geoData']['coordinates'][1], bar_info['geoData']['coordinates'][0])).km,
-                'latitude': bar_info['geoData']['coordinates'][1],
-                'longitude': bar_info['geoData']['coordinates'][0],
-                'title': bar_info['Name']
+                'distance': distance.distance((user_lat, user_lon), (bar_latitude, bar_longitude)).km,
+                'latitude': bar_latitude,
+                'longitude': bar_longitude,
+                'title': bar_name
             }
             bars_with_distance.append(bar_info_with_distance)
 
