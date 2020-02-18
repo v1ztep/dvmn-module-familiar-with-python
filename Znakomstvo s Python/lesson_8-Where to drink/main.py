@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from geopy import distance
 import folium
+from flask import Flask
 
 
 def fetch_coordinates(APIKEY, place):
@@ -19,6 +20,10 @@ def fetch_coordinates(APIKEY, place):
 
 def get_bar_distance(bar_around):
     return bar_around['distance']
+
+def bars_around_user():
+    with open('index.html') as file:
+      return file.read()
 
 def main():
     load_dotenv()
@@ -67,7 +72,9 @@ def main():
 
     user_and_bars_on_map.save('index.html')
 
-    import bars_site
+    app = Flask(__name__)
+    app.add_url_rule('/', 'bars around', bars_around_user)
+    app.run('127.0.0.1')
 
 
 if __name__ == '__main__':
