@@ -67,6 +67,7 @@ def main():
 
     user_and_bars_on_map.save('index.html')
 
+    import bars_site
 
 
 if __name__ == '__main__':
