@@ -25,7 +25,6 @@ def main():
     APIKEY = os.getenv('MY_API_KEY')
 
     my_coordinates = fetch_coordinates(APIKEY, input('Где вы находитесь? '))
-    print('Ваши координаты: ', my_coordinates)
 
     bars_around = []
 
