@@ -22,7 +22,7 @@ def get_bar_distance(bars_around):
 
 def main():
     load_dotenv()
-    APIKEY = os.getenv('MY_API_KEY')
+    APIKEY = os.getenv('YANDEX_GEOCODER_API')
 
     my_coordinates = fetch_coordinates(APIKEY, input('Где вы находитесь? '))
 
