@@ -7,9 +7,9 @@ import folium
 from flask import Flask
 
 
-def fetch_coordinates(APIKEY, place):
+def fetch_coordinates(apikey, place):
     base_url = "https://geocode-maps.yandex.ru/1.x"
-    params = {"geocode": place, "apikey": APIKEY, "format": "json"}
+    params = {"geocode": place, "apikey": apikey, "format": "json"}
     response = requests.get(base_url, params=params)
     response.raise_for_status()
     places_found = response.json()['response']['GeoObjectCollection']['featureMember']
@@ -27,10 +27,10 @@ def bars_around_user():
 
 def main():
     load_dotenv()
-    APIKEY = os.getenv('YANDEX_GEOCODER_APIKEY')
-    NEAREST_BARS_AMOUNT = 5
+    apikey = os.getenv('YANDEX_GEOCODER_APIKEY')
+    nearest_bars_amount = 5
 
-    user_lon, user_lat = fetch_coordinates(APIKEY, input('Введите своё местоположение: '))
+    user_lon, user_lat = fetch_coordinates(apikey, input('Введите своё местоположение: '))
 
     bars_with_distance = []
 
@@ -50,7 +50,7 @@ def main():
             }
             bars_with_distance.append(bar_info_with_distance)
 
-    sorted_bars = sorted(bars_with_distance, key=get_bar_distance)[:NEAREST_BARS_AMOUNT]
+    nearest_bars = sorted(bars_with_distance, key=get_bar_distance)[:nearest_bars_amount]
 
     user_and_bars_on_map = folium.Map(
         location=[user_lat, user_lon],
@@ -63,7 +63,7 @@ def main():
         icon=folium.Icon(color='red', icon='info-sign')
     ).add_to(user_and_bars_on_map)
 
-    for bar in sorted_bars:
+    for bar in nearest_bars:
         folium.Marker(
             location=[bar['latitude'], bar['longitude']],
             popup=bar['title'],
